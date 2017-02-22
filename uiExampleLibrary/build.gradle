@@ -12,6 +12,14 @@ buildscript {
     }
 }
 
+allprojects {
+    repositories {
+        jcenter()
+        maven {
+            url "../../maven/releases"
+        }
+    }
+}
 
 
 task clean(type: Delete) {
