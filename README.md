@@ -14,7 +14,7 @@ A Example collection of the Locuslabs android SDK, which aim to provide understa
 
 ### What if I dont have the SDK yet ?
 
-If you want to get the SDK or you are interested in working in your own project using our SDK, just let us a mail at support@locuslabs.com and we will get back at you as soon as we can.
+If you want to get the SDK or you are interested in working in your own project using our SDK, just send an email to support@locuslabs.com and we will get back at you as soon as we can.
 
 
 
