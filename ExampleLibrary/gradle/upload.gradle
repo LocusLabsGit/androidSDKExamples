@@ -1,0 +1,15 @@
+apply plugin: 'maven'
+
+///////////////////////////////////////////////////////////////////////
+//           Gradle Capabilities with Task Running CLI               //
+///////////////////////////////////////////////////////////////////////
+
+def buildAliases = ['upload':['assemble','uploadReleaseToHockeyApp']]
+
+def expandedTaskList = []
+
+gradle.startParameter.taskNames.each {
+    expandedTaskList << (buildAliases[it] ? buildAliases[it] : it)
+}
+
+gradle.startParameter.taskNames = expandedTaskList.flatten()

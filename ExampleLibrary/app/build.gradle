@@ -1,0 +1,99 @@
+apply plugin: 'com.android.application'
+apply plugin: 'de.felixschulze.gradle.hockeyapp'
+
+repositories {
+    flatDir {
+        dirs "${project.rootDir}/sdk/build/outputs/aar"
+    }
+}
+
+if(project.hasProperty("storeFile") && new File(project.property("storeFile")).exists()) {
+
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+    android {
+        lintOptions {
+            abortOnError false
+        }
+        compileSdkVersion 25
+        buildToolsVersion '25.0.2'
+        defaultConfig {
+            applicationId 'com.example.locuslabs.examplelibrary'
+            minSdkVersion 18
+            targetSdkVersion 25
+            versionCode 1
+            versionName '1.0.0.0'
+        }
+        signingConfigs {
+            debug {
+                storeFile file(properties.getProperty('storeFile'))
+                storePassword properties.getProperty('storePassword')
+                keyAlias properties.getProperty('keyAlias')
+                keyPassword properties.getProperty('keyPassword')
+            }
+            release {
+                storeFile file(properties.getProperty('storeFile'))
+                storePassword properties.getProperty('storePassword')
+                keyAlias properties.getProperty('keyAlias')
+                keyPassword properties.getProperty('keyPassword')
+            }
+        }
+        buildTypes {
+            debug {
+                signingConfig signingConfigs.debug
+            }
+            release {
+                signingConfig signingConfigs.release
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
+        }
+    }
+
+    // At PROJECT ROOT enter CMD: ./gradlew upload
+    hockeyapp {
+        apiToken = properties.getProperty('HockeyApp')
+        releaseType = 3 // alpha = 2 | production = 3 | beta = 0 | store = 1
+        notify = 0 // false = 0 | true = 1
+        status = 2 // no download = 1 | downloadable = 2
+        notesType = 0 // txt = 0 | markdown = 1
+        notes = new File(file('../../../ReleaseNotes.txt').absolutePath).getText('UTF-8')
+    }
+
+} else {
+    android {
+        lintOptions {
+            abortOnError false
+        }
+        compileSdkVersion 25
+        buildToolsVersion '25.0.2'
+        defaultConfig {
+            applicationId 'com.example.locuslabs.examplelibrary'
+            minSdkVersion 18
+            targetSdkVersion 25
+            versionCode 1
+            versionName '1.0.0.0'
+        }
+        buildTypes {
+            release {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'org.kamranzafar:jtar:2.2'
+    compile 'org.tukaani:xz:1.5'
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+apply from: rootProject.file('gradle/upload.gradle') // CMD: ./gradlew upload
