@@ -106,12 +106,10 @@ public class ExampleEnablePhoneNumbers extends Activity {
 
     // Construct a listener with a callback. This callback starts a new Activity, setting up the user's phone to make a call or add the phone number to their contacts.
     private void setupPhoneNumberClickedListener() {
-        mapView.setOnPoiPhoneClickedListener(new MapView.OnPoiPhoneClickedListener() {
+        this.mapView.setOnSupplyCurrentActivityListener(new MapView.OnSupplyCurrentActivityListener() {
             @Override
-            public void onPoiPhoneClicked(String phone) {
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" + phone));
-                ExampleEnablePhoneNumbers.this.startActivity(intent);
+            public Activity onSupplyCurrentActivity() {
+                return ExampleEnablePhoneNumbers.this;
             }
         });
     }
