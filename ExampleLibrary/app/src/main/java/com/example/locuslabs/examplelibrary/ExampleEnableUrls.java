@@ -107,13 +107,10 @@ public class ExampleEnableUrls extends Activity {
 
     // Construct a listener from the MapView class with a callback. This callback starts a new Activity, opening the URL Address in the native browser.
     private void setupUrlClickedListener() {
-        mapView.setOnPoiUrlClickedListener(new MapView.OnPoiUrlClickedListener() {
+        this.mapView.setOnSupplyCurrentActivityListener(new MapView.OnSupplyCurrentActivityListener() {
             @Override
-            public void onPoiUrlClicked(String url) {
-                // String url could be something like -> "http://www.google.com"
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(url));
-                ExampleEnableUrls.this.startActivity(intent);
+            public Activity onSupplyCurrentActivity() {
+                return ExampleEnableUrls.this;
             }
         });
     }
